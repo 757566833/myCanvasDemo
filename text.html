@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div style="float:left;height:700px">
+        
+    </div>
+    <canvas width="1200"    height="700" id="canvas">
+    </canvas>
+    <script>
+        var canvas = document.getElementById("canvas");
+        var context = canvas.getContext("2d");
+        canvas.onmousedown= function(e){
+            draw(e.pageX-10,e.pageY-10,"#f0f",5);
+            canvas.onmousemove=function(e){
+                draw(e.pageX-10,e.pageY-10,"#f0f",5) ;
+            }
+        }
+        canvas.onmouseup=function(){
+            canvas.onmousemove=null;
+        }
+        function draw(x,y,color,size) {
+            context.fillStyle=color;
+            context.fillRect(x,y,size,size);
+        }
+    </script>
+</body>
+</html>

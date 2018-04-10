@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>canvas</title>
+</head>
+<style>
+     .everyDiv{
+        float: left;
+        width: 600px;
+        height: 400px;
+        border:5px red solid;
+    } 
+    canvas{
+        border-top: 1px black solid;
+        border-bottom: 1px black solid;
+    }
+    p{
+        text-align: center;
+    }
+</style>
+<body>
+    <div style="width:1200px">
+        <div style="text-align: center;">
+            <h1>canvas</h1>
+        </div>
+        <div>
+            api:<br>
+            context提供的方法：<br>
+            fillStyle :设置画笔颜色；fillRect:实心的画出方块；<br>
+            lineWidth :设置画线的宽度，strokeRect:画出空心方块，lineJoin：拐角处分尖角/圆角/斜角<br>
+            font:设置字体样式,textBaseline:基线相对于字体的位置,fillText:实心字体，strokeText:空心字体<br>
+            shadowBlur:阴影模糊度，shadowColor :阴影颜色，shadowOffsetx/y:xy偏移量；
+            本身api只有方形画别的形状都需要路径<br>
+            beginPath:开始路径，closePath：结束路径；
+            arc:画圆弧，路径；fill()：填充路径；
+            arcTo：画圆弧，画笔；
+            
+        </div>
+    </div>
+    <div class="everyDiv">
+         <p>1.画基础图</p> 
+        <canvas class="canvases">
+
+        </canvas>
+    </div>
+    <div class="everyDiv">
+        <p>2.画方块</p>
+        <canvas class="canvases">
+
+        </canvas>
+    </div>
+     <div class="everyDiv">
+        <p>3.字体相关 </p>
+        <canvas class="canvases">
+
+        </canvas>
+    </div>
+    <div class="everyDiv">
+        <p>4.阴影相关</p>
+        <canvas class="canvases">
+
+        </canvas>
+    </div> 
+    <div class="everyDiv">
+        <p>5.arc画圆</p>
+        <canvas class="canvases">
+
+        </canvas>
+    </div> 
+    <div class="everyDiv">
+        <p>6.arcTo画圆弧</p>
+        <canvas class="canvases">
+
+        </canvas>
+    </div> 
+    <div class="everyDiv">
+        <p>7.lineTo与moveTo画多边形</p>
+        <canvas class="canvases">
+
+        </canvas>
+    </div> 
+    <div class="everyDiv">
+        <p>8.贝济埃曲线/二次曲线（就是ps的钢笔工具）</p>
+        <canvas class="canvases">
+
+        </canvas>
+    </div> 
+    <div class="everyDiv">
+        <p>9.image相关</p>
+        <canvas class="canvases">
+
+        </canvas>
+    </div> 
+    <div class="everyDiv">
+        <p>10.基本坐标变换</p>
+        <canvas class="canvases">
+
+        </canvas>
+    </div> 
+    <div class="everyDiv">
+        <p>11.坐标变换与路径结合</p>
+        <canvas class="canvases">
+
+        </canvas>
+    </div> 
+    <div class="everyDiv">
+        <p>12.矩阵坐标变换</p>
+        <canvas class="canvases">
+
+        </canvas>
+    </div> 
+    <div class="everyDiv">
+        <p>13.控制叠加风格</p>
+        <select style="width:160px" onchange="draw(this.value);";>
+	        <option value="source-over">source-over</option>
+	        <option value="source-in">source-in</option>
+	        <option value="source-out">source-out</option>
+	        <option value="source-atop">source-atop</option>
+	        <option value="destination-over">destination-over</option>
+	        <option value="destination-in">destination-in</option>
+	        <option value="destination-out">destination-out</option>
+	        <option value="destination-atop">destination-atop</option>
+	        <option value="lighter">lighter</option>
+	        <option value="xor">xor</option>
+	        <option value="copy">copy</option>
+        </select><br/>
+        <canvas class="canvases">
+
+        </canvas>
+    </div> 
+    <div class="everyDiv">
+        <p>14.线性渐变</p>
+        <canvas class="canvases">
+
+        </canvas>
+    </div> 
+    <div class="everyDiv">
+        <p>15.圆形渐变</p>
+        <canvas class="canvases">
+
+        </canvas>
+    </div> 
+    <div class="everyDiv">
+        <p>16.位图填充</p>
+        <canvas class="canvases">
+
+        </canvas>
+    </div> 
+    <div class="everyDiv">
+        <p>17.位图剪裁</p>
+        <canvas class="canvases">
+
+        </canvas>
+    </div> 
+    <div class="everyDiv">
+        <p>18.透明度（这个有跨域bug）</p>
+        <canvas class="canvases">
+
+        </canvas>
+    </div> 
+    <div class="everyDiv">
+        <p>19.高亮（这个有跨域bug）</p>
+        <canvas class="canvases">
+
+        </canvas>
+    </div> 
+    <div class="everyDiv">
+        <p>20.输出位图（这个有跨域bug）</p>
+        <canvas class="canvases">
+
+        </canvas>
+    </div> 
+</body>
+<script>
+    /*设置每个画板的大小*/
+    var canvasArrays = document.getElementsByClassName("canvases")
+    var canvasLength = canvasArrays.length;
+    for(let i = 0;i<canvasLength;i++){
+        canvasArrays[i].setAttribute("width",600);
+        canvasArrays[i].setAttribute("height",300);
+        canvasArrays[i].setAttribute("id",("no"+(i+1)));
+    }
+
+    /*1*/
+    var canvas1=document.getElementById("no1");
+    var context = canvas1.getContext('2d');
+    context.fillStyle='#f00';
+    context.fillRect(30,40,80,100);
+
+    /*2*/
+    var canvas2 = document.getElementById("no2");
+    var context = canvas2.getContext('2d');
+    context.fillStyle='#f00';
+    context.fillRect(30,20,120,60);
+
+    context.fillStyle='#ff0';
+    context.fillRect(80,60,120,60);
+
+    context.strokeStyle='#00f';
+    context.lineWidth=10;
+    context.strokeRect(30, 130, 120, 60);
+
+    context.strokeStyle='#0ff';
+    context.lineJoin='round';
+    context.strokeRect(80, 160, 120, 60);
+
+    context.strokeStyle='#f0f';
+    context.lineJoin='bevel';
+    context.strokeRect(130, 190, 120, 60);
+    
+    /*3*/
+    var canvas3 = document.getElementById("no3");
+    var context = canvas3.getContext('2d');
+    context.fillStyle='#00f';
+    context.font='50px italic 隶书';
+    context.textBaseline='top';
+    context.fillText("实例文字", 0, 0);
+
+    context.strokeStyle='#f0f';
+    context.font='45px bold 宋体';
+    context.strokeText("空心字体", 0, 50);
+    
+    /*4*/
+    var canvas4 = document.getElementById("no4");
+    var context = canvas4.getContext("2d");
+    //阴影模糊度
+    context.shadowBlur=5.6;
+    //阴影颜色
+    context.shadowColor='#222';
+    //xy偏移方向
+    context.shadowOffsetX=10;
+    context.shadowOffsetY=-6;
+    context.fillStyle='#00f';
+    context.font='50px italic 隶书';
+    context.textBaseline='top';
+    context.fillText("阴影示例", 0, 0);
+    context.strokeStyle='#f0f';
+    context.font='45px bold 宋体';
+    context.strokeText("阴影示例2", 0, 50);
+    context.fillRect(20,150,180,80);
+    context.lineWidth=8;
+    context.strokeRect(300, 150, 180, 80);
+    
+    /*5*/
+    var canvas5 = document.getElementById("no5");
+    var context = canvas5.getContext('2d');
+    for(var i =0;i<10;i++)
+    {
+        context.beginPath();
+        context.arc(i*25, i*25, (i+1)*8, Math.PI/180*0, Math.PI /180 * 360, true);
+        context.closePath();
+        context.fillStyle='rgba(255,0,255,'+(10-i)*0.1+')';
+        context.fill();
+    }
+
+    /*6*/
+    /*
+        绘制圆角矩形的方法
+        x1,y1圆角矩形左上角的坐标
+        width,height:控制圆角矩形的宽高
+        radius：控制圆角矩形的四个圆角半径
+    */
+    function createRoundRect(context,x1,y1,width,height,radius) {
+        context.moveTo(x1+radius, y1);
+        context.lineTo(x1+width-radius, y1);
+        context.arcTo(x1+width, y1,x1+width, y1+radius, radius);
+        context.lineTo(x1+width, y1+height-radius);
+        context.arcTo(x1+width, y1+height, x1+width-radius,y1+height, radius);
+        context.lineTo(x1+radius, y1+height);
+        context.arcTo(x1,y1+height, x1, y1+height-radius, radius);
+        context.lineTo(x1, y1+radius);
+        context.arcTo(x1, y1, x1+radius, y1, radius);
+        context.closePath();
+    }
+    var canvas6 = document.getElementById("no6");
+    var context = canvas6.getContext("2d");
+    context.lineWidth=3;
+    createRoundRect(context,30,30,200,100,20);
+    context.stroke();
+
+    /*7*/
+    /*
+        该方法回执多角形
+        n:参数通常设为奇数，控制n角形
+        dx,dy:控制n角星的位置
+        size:控制N角星的大小
+    */
+    function createStar(context,n,dx,dy,size) {
+        context.beginPath();
+        var dig = Math.PI/n*4;
+        context.moveTo(dx,dy);
+        for(var i =0;i<=n;i++){
+            var x = Math.sin(i*dig);
+            var y = Math.cos(i*dig);
+            context.lineTo(x*size+dx, y*size+dy);
+        }
+        context.closePath();
+    }
+    var canvas7 = document.getElementById("no7");
+    var context = canvas7.getContext('2d');
+    createStar(context,3,60,60,50);
+    context.fillStyle='#f00';
+    context.fill();
+    createStar(context,5,160,60,50);
+    context.fillStyle='#0f0';
+    context.fill();
+    createStar(context,7,260,60,50);
+    context.fillStyle='#00f';
+    context.fill();
+    createStar(context,9,360,60,50);
+    context.fillStyle='#f0f';
+    context.fill();
+
+    /*8*/
+    /*
+        该方法负责绘制花朵
+        n:花朵瓣数
+        dx/dy;花朵位置
+        size：花朵大小
+        length：花瓣长度
+    */
+    function createFlower(context,n,dx,dy,size,length) {
+        context.beginPath();
+        context.moveTo(dx,dy+size);
+        var dig =2*Math.PI/n;
+        for(var i=1;i<n+1;i++){
+            var ctrlX = Math.sin((i-0.5)*dig)*length+dx;
+            var ctrlY = Math.cos((i-0.5)*dig)*length+dy;
+            var x = Math.sin(i*dig)*size+dx;
+            var y = Math.cos(i*dig)*size+dy;
+            context.quadraticCurveTo(ctrlX, ctrlY, x, y);
+        }
+        context.closePath();
+    }
+    var canvas8 = document.getElementById("no8");
+    var context = canvas8.getContext("2d");
+    createFlower(context,5,70,100,30,80);
+    context.fillStyle='#f00';
+    context.fill();
+
+    createFlower(context,6,200,100,30,80);
+    context.fillStyle='#ff0';
+    context.fill();
+
+    createFlower(context,7,330,100,30,80);
+    context.fillStyle='#f0f';
+    context.fill();
+
+    /*9*/
+    var canvas9 =document.getElementById("no9");
+    var context10 = canvas9.getContext("2d");
+    var image = new Image();
+    image.src = "1.jpg";
+    image.onload=function(){
+        context10.drawImage(image, 20,10);
+        context10.drawImage(image, 180, 10,76,110);
+        var sd=50;
+        var sh= 65;
+        context10.drawImage(image, 2, 50,sd,sh,265,10,sd*3,sh*3);
+    }
+    // context.closePath();
+    
+
+    /*10*/
+    var canvas10 = document.getElementById("no10");
+    var context = canvas10.getContext("2d");
+    context.fillStyle='rgba(255,0,0,0.3)';
+    context.translate(30, 200);
+    for(var i =0;i<50;i++){
+        context.translate(50, 50);
+        context.scale(0.93, 0.93);
+        context.rotate(-Math.PI / 10);
+        context.fillRect(0,0,150,75);
+        
+    }
+
+    /*11*/
+    snowPos=[
+        {x:20,y:4},
+        {x:60,y:4},
+        {x:100,y:4},
+        {x:140,y:4},
+        {x:180,y:4},
+        {x:220,y:4},
+        {x:260,y:4},
+        {x:300,y:4},
+        {x:340,y:4},
+        {x:380,y:4}
+    ];
+    function fall(context) {
+        context.fillStyle='#000';
+        context.fillRect(0,0,420,280);
+        context.fillStyle='#fff';
+        var len =snowPos.length;
+        for(var i=0;i<len;i++){
+            context.save();
+            context.translate(snowPos[i].x, snowPos[i].y);
+            context.rotate((Math.random()*6-3)*Math.PI / 10);
+            snowPos[i].y+=Math.random()*8;
+            if(snowPos[i].y>280){
+                snowPos[i].y=4;
+            }
+            createFlower(context,6,0,0,5,8);
+            context.fill();
+            context.restore();
+        }
+    }
+    var canvas11 = document.getElementById("no11");
+    var context11 = canvas11.getContext("2d");
+    setInterval("fall(context11)",200);
+
+    /*12*/
+    function skew(context,angle) {
+        context.transform(1, 0, -Math.tan(angle), 1, 0, 0);
+    }
+    var canvas12 = document.getElementById("no12");
+    var context = canvas12.getContext('2d');
+    context.fillStyle='rgba(255,0,0,0.3)';
+    context.translate(360, 5);
+    for(var i=0;i<20;i++){
+        context.translate(30, 20);
+        context.scale(0.93, 0.93);
+        skew(context,Math.PI/10);
+        context.fillRect(0,0,150,75);
+    }
+    
+
+    /*13*/
+    var canvas13 = document.getElementById("no13");
+    var context = canvas13.getContext('2d');
+    var draw = function (compositeOper) {
+        context.save();
+        context.clearRect(0, 0, 400, 200);
+        context.fillStyle='#f00';
+        context.fillRect(30,20,160,100);
+        context.globalCompositeOperation=compositeOper;
+        context.fillStyle='#0f0';
+        context.fillRect(120,60,160,100);
+        context.restore();
+    };
+    draw("source-over");
+
+    /*14*/
+    var canvas14 = document.getElementById("no14");
+    var context = canvas14.getContext('2d');
+    context.save();
+    context.translate(30,20);
+    lg=context.createLinearGradient(0, 0, 160, 80);
+    lg.addColorStop(0.2, '#f00');
+    lg.addColorStop(0.5, '#0f0');
+    lg.addColorStop(0.9, '#00f');
+    context.fillStyle=lg;
+    context.fillRect(0,0,160,80);
+    context.restore();
+    context.translate(280, 160);
+    context.beginPath();
+    context.arc(0, 0, 80, 0, Math.PI / 180 * 360, true);
+    context.closePath();
+    context.lineWidth=12;
+    lg2= context.createLinearGradient(-40, -40, 80, 50);
+    lg2.addColorStop(0.1, '#ff0');
+    lg2.addColorStop(0.4, '#0ff');
+    lg2.addColorStop(0.8, '#f0f');
+    context.strokeStyle=lg2;
+    context.stroke();
+
+    /*15*/
+    var canvas15 = document.getElementById("no15");
+    var context = canvas15.getContext("2d");
+    context.save();
+    context.translate(30, 20);
+    context.createRadialGradient(80, 40, 5, 80, 40, 60);
+    lg.addColorStop(0.2, '#f00');
+    lg.addColorStop(0.5, '#0f0');
+    lg.addColorStop(0.9, '#00f');
+    context.fillStyle=lg;
+    context.fillRect(0,0,160,80);
+    context.restore();
+    context.translate(280, 160);
+    context.beginPath();
+    context.arc(0, 0, 80, 0, Math.PI / 180 * 360, true);
+    context.closePath();
+    context.lineWidth=12;
+    lg2 = context.createRadialGradient(0, 0, 5, 0, 0, 80);
+    lg2.addColorStop(0.1, '#ff0');
+    lg2.addColorStop(0.4,'#0ff');
+    lg2.addColorStop(0.8,'#f0f');
+    context.fillStyle=lg2;
+    context.fill();
+    
+
+    /*16*/
+    var canvas16 = document.getElementById("no16");
+    var context16 = canvas16.getContext('2d');
+    context16.save();
+    context16.translate(30, 20);
+    var image16 = new Image();
+    image16.src = "2.jpg";
+    image16.onload=function(){
+        imgPattern16 = context16.createPattern(image16, "repeat");
+        context16.fillStyle=imgPattern16;
+        context16.fillRect(0,0,160,80);
+        context16.restore();
+        context16.translate(280, 160);
+        context16.beginPath();
+        context16.arc(0, 0, 80, 0, Math.PI / 180 * 360, true);
+        context16.closePath();
+        context16.lineWidth=12;
+        context16.strokeStyle=imgPattern16;
+        context16.stroke();
+        
+    }
+
+    /*17*/
+    var canvas17 = document.getElementById("no17");
+    var context = canvas17.getContext("2d");
+    var dig =Math.PI/100;
+    var count = 0;
+    var image17 = new Image();
+    image17.src = "1.jpg";
+    image17.onload=function(){
+        setInterval("addRadial()", 150);
+    }
+    var addRadial = function () {
+        context.save();
+        context.beginPath();
+        context.arc(200, 130, 200, 0, dig * ++count, false);
+        context.lineTo(200, 130);
+        context.closePath();
+        context.clip();
+        context.drawImage(image17, 124, 20);
+        context.restore();
+    }
+
+    /*18*/
+    var  canvas18 = document.getElementById("no18");
+    var context18 = canvas18.getContext('2d');
+    var image18 = new Image();
+    image18.src = "1.jpg";
+    image18.onload = function () {
+        drawImage(image18, 124, 20, 0.4);
+    }
+    var drawImage = function (image,x,y,alpha) {
+        context18.drawImage(image, x, y);
+        var imgData = context18.getImageData(x, y, image.width, image.height);
+        for(var o =0,len =imgData.data.length;i<len;i+=4){
+            imgData.data[i+3]=imgData.data[i+3]*alpha;
+        }
+        context18.putImageData(imgData, 124, 20);
+    }
+
+    /*19*/
+    var canvas19= document.getElementById("no19");
+    var context19 = canvas19.getContext("2d");
+    var image19 = new Image();
+    image19.src = "1.jpg";
+    image19.onload = function () {
+        context19.drawImage(image, 30, 20);
+        lightImage(image,220,20,1.6);
+    }
+    var lightImage = function (image,x,y,light) {
+        context19.drawImage(image, x, y);
+        var imgData = context19.getImageData(x, y, image.width, image.height);
+        for(var i=0,len = imgData.data.length;i<len;i+=4){
+            imgData.data[i+0] = imgData.data[i+0]*light;
+            imgData.data[i+1] = imgData.data[i+1]*light;
+            imgData.data[i+2] = imgData.data[i+2]*light;
+        }
+        context19.putImageData(imgData, x, y);
+    }
+
+    /*20*/
+
+</script>
+</html>

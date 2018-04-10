@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <input type="text" id="number"/>
+    <button onclick="draw()">绘制</button>
+    <canvas width="1200"0 height="700" id="no1">
+
+    </canvas>
+    <script>
+        var canvas = document.getElementById("no1");
+        var context = canvas.getContext('2d');
+        function draw() {
+            context.clearRect(0,0,1200,700);
+            var number = document.getElementById("number").value;
+            createStart(context,number,300,300,300);
+            context.fillStyle='#f00';
+            context.fill();
+        }
+        function createStart(context ,n,dx,dy,size) {
+            context.beginPath();
+            var dig = Math.PI*2/n;
+            context.moveTo(dx+size*Math.sin(dig/2), dy+size*Math.cos(dig/2+Math.PI));
+            for(let i =0;i<n;i++){
+                context.lineTo(dx+size*Math.sin(dig*(i+1.5)), dy+size*Math.cos(dig*(i+1.5)+Math.PI));
+            }
+            context.closePath();
+        }
+
+    </script>
+</body>
+</html>
